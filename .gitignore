@@ -14,4 +14,8 @@
 .glide/
 
 .bin/*
+lambda/.bin/*
 lambda/build/
+lambda/vendor/
+config.toml
+output.yml

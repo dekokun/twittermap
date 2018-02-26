@@ -7,7 +7,8 @@ INPUT_TEMPATE := template.yml
 SAMLOCAL := .bin/aws-sam-local
 
 
-$(OUTPUT_TEMPLATE): $(INPUT_TEMPATE) $(SAMLOCAL)
+$(OUTPUT_TEMPLATE): $(INPUT_TEMPATE) $(SAMLOCAL) lambda/main.go
+	make -C lambda build/lambda-go
 	$(SAMLOCAL) package \
 		--template-file $< \
 		--s3-bucket $(CONFIG_CLOUDFORMATION_PACKAGE_S3_BUCKET_NAME) \
@@ -29,3 +30,8 @@ deploy: $(OUTPUT_TEMPLATE) $(SAMLOCAL)
 setup-go:
 	GOBIN=$(abspath .bin) go get -v \
 		github.com/awslabs/aws-sam-local
+
+.PHONY: test
+test: $(SAMLOCAL)
+	make -C lambda build/lambda-go
+	$(SAMLOCAL) local invoke JsonS3UploadLambda -e event_file.json
