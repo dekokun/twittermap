@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"os"
 
 	"github.com/BurntSushi/toml"
@@ -19,25 +19,26 @@ func main() {
 
 func handleRequest(request events.CloudWatchEvent) (events.CloudWatchEvent, error) {
 	config := loadConfig()
-	oauthConfig := oauth1.NewConfig(config.twitterConsumerKey, config.twitterConsumerSecret)
-	token := oauth1.NewToken(config.twitterAccessToken, config.twitterAccessSecret)
-	// OAuth1 http.Client will automatically authorize Requests
+	oauthConfig := oauth1.NewConfig(config.TwitterConsumerKey, config.TwitterConsumerSecret)
+	token := oauth1.NewToken(config.TwitterAccessToken, config.TwitterAccessSecret)
 	httpClient := oauthConfig.Client(oauth1.NoContext, token)
 
 	// Twitter client
 	client := twitter.NewClient(httpClient)
 	userTimelineParams := &twitter.UserTimelineParams{ScreenName: "dekokun", Count: 2}
-	tweets, _, _ := client.Timelines.UserTimeline(userTimelineParams)
-	fmt.Printf("USER TIMELINE:\n%+v\n", tweets)
+	tweets, responce, err := client.Timelines.UserTimeline(userTimelineParams)
+	log.Println("USER TIMELINE:", tweets)
+	log.Println("responce:", responce)
+	log.Println("err:", err)
 
 	return request, nil
 }
 
 type config struct {
-	twitterConsumerKey    string
-	twitterConsumerSecret string
-	twitterAccessToken    string
-	twitterAccessSecret   string
+	TwitterConsumerKey    string
+	TwitterConsumerSecret string
+	TwitterAccessToken    string
+	TwitterAccessSecret   string
 }
 
 func loadConfig() config {
