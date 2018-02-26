@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  JsonS3UploadLambda:
+    Properties:
+      CodeUri: s3://dekokun-cloudformation-packages/twittermap/17bf22ca284a861629bf58512e6a2386
+      Events:
+        ScheduleEvent:
+          Properties:
+            Schedule: rate(1 minute)
+          Type: Schedule
+      Handler: lambda-go
+      Runtime: go1.x
+      Timeout: 300
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31
