@@ -25,6 +25,12 @@
   version = "v1.1.0"
 
 [[projects]]
+  name = "github.com/davecgh/go-spew"
+  packages = ["spew"]
+  revision = "346938d642f2ec3594ed81d874461961cd0faa76"
+  version = "v1.1.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/dghubble/go-twitter"
   packages = ["twitter"]
@@ -57,6 +63,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "beb4cc24bf561cd7ff227a397f6ef0209989325d55b5ad64ba9644d80e6751c1"
+  inputs-digest = "8b07b57c4ac4e18cf93534b6b441d59a7be84399543850083eb9ceadf1cad374"
   solver-name = "gps-cdcl"
   solver-version = 1
