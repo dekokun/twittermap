@@ -28,9 +28,10 @@ func handleRequest(request events.CloudWatchEvent) (events.CloudWatchEvent, erro
 	client := twitter.NewClient(httpClient)
 	userTimelineParams := &twitter.UserTimelineParams{ScreenName: "dekokun", Count: 2}
 	tweets, responce, err := client.Timelines.UserTimeline(userTimelineParams)
-	log.Println("USER TIMELINE:", tweets)
-	log.Println("responce:", responce)
-	log.Println("err:", err)
+	if err != nil {
+		log.Println("responce:", responce)
+		log.Println("err:", err)
+	}
 
 	return request, nil
 }
