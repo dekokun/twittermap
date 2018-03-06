@@ -14,3 +14,25 @@ Resources:
           Type: Schedule
           Properties:
             Schedule: rate(1 minute)
+      Policies:
+        - S3CrudPolicy:
+            BucketName: twittermap.dekokun.info
+  StepFunction:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      StateMachineName: hoge
+      DefinitionString:
+        !Sub
+        - |-
+          {
+            "StartAt": "HelloWorld",
+            "States": {
+              "HelloWorld": {
+                "Type": "Task",
+                "Resource": "${JsonS3UploadLambdaArn}",
+                "End": true
+              }
+            }
+          }
+        - {JsonS3UploadLambdaArn: !GetAtt [ JsonS3UploadLambda, Arn ]}
+      RoleArn: !GetAtt [JsonS3UploadLambdaRole, Arn]
