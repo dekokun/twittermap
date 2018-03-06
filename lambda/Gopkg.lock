@@ -19,6 +19,41 @@
   version = "v1.1.0"
 
 [[projects]]
+  name = "github.com/aws/aws-sdk-go"
+  packages = [
+    "aws",
+    "aws/awserr",
+    "aws/awsutil",
+    "aws/client",
+    "aws/client/metadata",
+    "aws/corehandlers",
+    "aws/credentials",
+    "aws/credentials/ec2rolecreds",
+    "aws/credentials/endpointcreds",
+    "aws/credentials/stscreds",
+    "aws/defaults",
+    "aws/ec2metadata",
+    "aws/endpoints",
+    "aws/request",
+    "aws/session",
+    "aws/signer/v4",
+    "internal/sdkrand",
+    "internal/shareddefaults",
+    "private/protocol",
+    "private/protocol/query",
+    "private/protocol/query/queryutil",
+    "private/protocol/rest",
+    "private/protocol/restxml",
+    "private/protocol/xml/xmlutil",
+    "service/s3",
+    "service/s3/s3iface",
+    "service/s3/s3manager",
+    "service/sts"
+  ]
+  revision = "aace5875a5c3b85a3902c6d72b9caed301d64cce"
+  version = "v1.13.8"
+
+[[projects]]
   name = "github.com/cenkalti/backoff"
   packages = ["."]
   revision = "61153c768f31ee5f130071d08fc82b85208528de"
@@ -49,20 +84,31 @@
   version = "v1.1.0"
 
 [[projects]]
+  name = "github.com/go-ini/ini"
+  packages = ["."]
+  revision = "32e4c1e6bc4e7d0d8451aa6b75200d19e37a536a"
+  version = "v1.32.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/google/go-querystring"
   packages = ["query"]
   revision = "53e6ce116135b80d037921a7fdd5138cf32d7a8a"
 
 [[projects]]
+  name = "github.com/jmespath/go-jmespath"
+  packages = ["."]
+  revision = "0b12d6b5"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/net"
   packages = ["context"]
-  revision = "cbe0f9307d0156177f9dd5dc85da1a31abc5f2fb"
+  revision = "22ae77b79946ea320088417e4d50825671d82d57"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "8b07b57c4ac4e18cf93534b6b441d59a7be84399543850083eb9ceadf1cad374"
+  inputs-digest = "805c1703bb0644806d354b238b11bb79a70557543bd53f4209ed4206617b86e9"
   solver-name = "gps-cdcl"
   solver-version = 1
