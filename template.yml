@@ -8,6 +8,7 @@ Resources:
       Runtime: go1.x
       CodeUri: lambda/build
       Timeout: 300
+      AutoPublishAlias: latest
       Events:
         ScheduleEvent:
           Type: Schedule
