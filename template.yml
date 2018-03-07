@@ -1,7 +1,15 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
 Resources:
-  JsonS3UploadLambda:
+  TweetGetLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda-go # file name
+      Runtime: go1.x
+      CodeUri: lambda/build
+      Timeout: 300
+      AutoPublishAlias: latest
+  S3UploadLambda:
     Type: AWS::Serverless::Function
     Properties:
       Handler: lambda-go # file name
@@ -17,10 +25,9 @@ Resources:
       Policies:
         - S3CrudPolicy:
             BucketName: twittermap.dekokun.info
-  StepFunction:
+  TwitterS3UploadStepFunction:
     Type: AWS::StepFunctions::StateMachine
     Properties:
-      StateMachineName: hoge
       DefinitionString:
         !Sub
         - |-
@@ -29,10 +36,31 @@ Resources:
             "States": {
               "HelloWorld": {
                 "Type": "Task",
-                "Resource": "${JsonS3UploadLambdaArn}",
+                "Resource": "${S3UploadLambdaArn}",
                 "End": true
               }
             }
           }
-        - {JsonS3UploadLambdaArn: !GetAtt [ JsonS3UploadLambda, Arn ]}
-      RoleArn: !GetAtt [JsonS3UploadLambdaRole, Arn]
+        - {S3UploadLambdaArn: !GetAtt [ S3UploadLambda, Arn ]}
+      RoleArn: !GetAtt [TwitterS3UploadStepFunctionRole, Arn]
+  TwitterS3UploadStepFunctionRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - !Sub states.${AWS::Region}.amazonaws.com
+            Action: "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        - PolicyName: StatesExecutionPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                Resource: [!GetAtt [S3UploadLambda, Arn], !GetAtt [TweetGetLambda, Arn]]
