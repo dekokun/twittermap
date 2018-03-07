@@ -2,10 +2,10 @@
 
 ```
 [batch]
-                    tweet
-                      |
-                      v
-                    |lambda -> lambda | -> S3 json
+                    tweet       S3
+                      |          ^
+                      v          | json
+                    |lambda -> lambda |
 cloudwatch alarm -> |  step function  |
 
 [web]
