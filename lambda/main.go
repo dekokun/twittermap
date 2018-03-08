@@ -44,6 +44,8 @@ func handleRequest(request events.CloudWatchEvent) (events.CloudWatchEvent, erro
 	spew.Dump(tweets[0].Entities.Media[0].MediaURLHttps)
 	spew.Dump(tweets[0].Entities.Media[0].ExpandedURL)
 	sess := session.New(&aws.Config{})
+
+	// S3 Client test
 	s3Svc := s3.New(sess, aws.NewConfig().WithRegion("ap-northeast-1"))
 	uploader := s3manager.NewUploaderWithClient(s3Svc)
 	bucket := "twittermap.dekokun.info"
