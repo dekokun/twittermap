@@ -7,8 +7,8 @@ INPUT_TEMPATE := template.yml
 SAMLOCAL := .bin/aws-sam-local
 
 
-$(OUTPUT_TEMPLATE): $(INPUT_TEMPATE) $(SAMLOCAL) lambda/main.go
-	make -C lambda build/lambda-go
+$(OUTPUT_TEMPLATE): $(INPUT_TEMPATE) $(SAMLOCAL) lambda/tweetget.go lambda/s3upload.go
+	@$(MAKE) -C lambda build
 	$(SAMLOCAL) package \
 		--template-file $< \
 		--s3-bucket $(CONFIG_CLOUDFORMATION_PACKAGE_S3_BUCKET_NAME) \
@@ -20,7 +20,6 @@ deploy: $(OUTPUT_TEMPLATE) $(SAMLOCAL)
 		--template-file $< \
 		--stack-name $(CONFIG_CLOUDFORMATION_STACK_NAME) \
 		--capabilities CAPABILITY_IAM
-
 
 .bin/%: Makefile
 	@$(MAKE) setup-go

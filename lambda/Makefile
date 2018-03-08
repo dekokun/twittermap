@@ -1,9 +1,16 @@
-BUILD := build/lambda-go
 DEP := .bin/dep
 SAMLOCAL := .bin/aws-sam-local
 
-$(BUILD): main.go Makefile config.toml
-	GOARCH=amd64 GOOS=linux go build -o $@
+.PHONY: build
+build:
+	@$(MAKE) build/tweetget
+	@$(MAKE) build/s3upload
+
+build/tweetget: tweetget.go Makefile config.toml
+	GOARCH=amd64 GOOS=linux go build -o $@ $<
+	cp config.toml build/config.toml
+build/s3upload: s3upload.go Makefile config.toml
+	GOARCH=amd64 GOOS=linux go build -o $@ $<
 	cp config.toml build/config.toml
 
 .PHONY: install

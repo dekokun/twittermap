@@ -4,15 +4,7 @@ Resources:
   TweetGetLambda:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: lambda-go # file name
-      Runtime: go1.x
-      CodeUri: lambda/build
-      Timeout: 300
-      AutoPublishAlias: latest
-  S3UploadLambda:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: lambda-go # file name
+      Handler: tweetget # file name
       Runtime: go1.x
       CodeUri: lambda/build
       Timeout: 300
@@ -22,6 +14,14 @@ Resources:
           Type: Schedule
           Properties:
             Schedule: rate(1 minute)
+  S3UploadLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: s3upload # file name
+      Runtime: go1.x
+      CodeUri: lambda/build
+      Timeout: 300
+      AutoPublishAlias: latest
       Policies:
         - S3CrudPolicy:
             BucketName: twittermap.dekokun.info
