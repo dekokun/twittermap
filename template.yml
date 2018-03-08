@@ -32,16 +32,21 @@ Resources:
         !Sub
         - |-
           {
-            "StartAt": "HelloWorld",
+            "StartAt": "FirstState",
             "States": {
-              "HelloWorld": {
+              "FirstState": {
+                "Type": "Task",
+                "Resource": "${TweetGetLambdaArn}",
+                "Next": "SecondMatchState"
+              },
+                "SecondMatchState": {
                 "Type": "Task",
                 "Resource": "${S3UploadLambdaArn}",
                 "End": true
-              }
+                }
             }
           }
-        - {S3UploadLambdaArn: !GetAtt [ S3UploadLambda, Arn ]}
+        - {S3UploadLambdaArn: !GetAtt [ S3UploadLambda, Arn ], TweetGetLambdaArn: !GetAtt [ TweetGetLambda, Arn ]}
       RoleArn: !GetAtt [TwitterS3UploadStepFunctionRole, Arn]
   TwitterS3UploadStepFunctionRole:
     Type: "AWS::IAM::Role"
