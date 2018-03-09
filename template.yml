@@ -9,11 +9,6 @@ Resources:
       CodeUri: lambda/build
       Timeout: 300
       AutoPublishAlias: latest
-      Events:
-        ScheduleEvent:
-          Type: Schedule
-          Properties:
-            Schedule: rate(1 minute)
   S3UploadLambda:
     Type: AWS::Serverless::Function
     Properties:
@@ -85,3 +80,33 @@ Resources:
                 Action:
                   - lambda:InvokeFunction
                 Resource: [!GetAtt [S3UploadLambda, Arn], !GetAtt [TweetGetLambda, Arn]]
+  TwitterS3UploadStepFunctionCloudWatchEvent:
+    Type: AWS::Events::Rule
+    Properties:
+      ScheduleExpression: 'cron(* * * * ? *)'
+      State: ENABLED
+      Targets:
+        - Arn: !Ref TwitterS3UploadStepFunction
+          Id: twitter-s3upload-stepfunction
+          RoleArn: !GetAtt [TwitterS3UploadStepFunctionCloudWatchEventRole, Arn]
+  TwitterS3UploadStepFunctionCloudWatchEventRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - events.amazonaws.com
+            Action: "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        - PolicyName: StatesExecutionPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - states:StartExecution
+                Resource: [!Ref TwitterS3UploadStepFunction]
