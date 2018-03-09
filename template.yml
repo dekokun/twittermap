@@ -37,9 +37,9 @@ Resources:
               "FirstState": {
                 "Type": "Task",
                 "Resource": "${TweetGetLambdaArn}",
-                "Next": "SecondMatchState"
+                "Next": "TweetGetDoneState"
               },
-                "SecondMatchState": {
+                "TweetGetDoneState": {
                 "Type": "Task",
                 "Resource": "${S3UploadLambdaArn}",
                 "End": true
