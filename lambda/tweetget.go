@@ -36,8 +36,18 @@ func handleRequest(request events.CloudWatchEvent) (events.CloudWatchEvent, erro
 	spew.Dump(tweets[0].Coordinates)
 	spew.Dump(tweets[0].CreatedAt)
 	spew.Dump(tweets[0].Text)
-	spew.Dump(tweets[0].Entities.Media[0].MediaURLHttps)
-	spew.Dump(tweets[0].Entities.Media[0].ExpandedURL)
+	spew.Dump(tweets[0].Entities.Media)
+	var mediaURL string
+	var expandedURL string
+	if tweets[0].Entities.Media == nil {
+		mediaURL = ""
+		expandedURL = ""
+	} else {
+		mediaURL = tweets[0].Entities.Media[0].MediaURLHttps
+		expandedURL = tweets[0].Entities.Media[0].ExpandedURL
+	}
+	spew.Dump(mediaURL)
+	spew.Dump(expandedURL)
 
 	return request, nil
 }
