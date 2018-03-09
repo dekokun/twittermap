@@ -37,11 +37,27 @@ Resources:
               "FirstState": {
                 "Type": "Task",
                 "Resource": "${TweetGetLambdaArn}",
+                "Retry": [
+                  {
+                    "ErrorEquals": [ "States.ALL" ],
+                    "IntervalSeconds": 10,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 2
+                  }
+                ],
                 "Next": "TweetGetDoneState"
               },
                 "TweetGetDoneState": {
                 "Type": "Task",
                 "Resource": "${S3UploadLambdaArn}",
+                "Retry": [
+                  {
+                    "ErrorEquals": [ "States.ALL" ],
+                    "IntervalSeconds": 10,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 2
+                  }
+                ],
                 "End": true
                 }
             }
