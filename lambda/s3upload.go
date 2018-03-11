@@ -28,7 +28,7 @@ func handleRequest(ctx context.Context, tweets []Tweet) (string, error) {
 	s3Svc := s3.New(sess, aws.NewConfig().WithRegion("ap-northeast-1"))
 	uploader := s3manager.NewUploaderWithClient(s3Svc)
 	contentType := "application/json"
-	bucket := "twittermap.dekokun.info"
+	bucket := os.Getenv("BucketName")
 	key := "hogehogeeeeetests"
 	jsonBytes, err := json.Marshal(tweets)
 	if err != nil {

@@ -9,6 +9,10 @@ Resources:
       CodeUri: lambda/build
       Timeout: 300
       AutoPublishAlias: latest
+      Environment:
+        Variables:
+          BucketName: twittermap.dekokun.info
+          TwitterUseName: dekokun
   S3UploadLambda:
     Type: AWS::Serverless::Function
     Properties:
@@ -17,6 +21,9 @@ Resources:
       CodeUri: lambda/build
       Timeout: 300
       AutoPublishAlias: latest
+      Environment:
+        Variables:
+          BucketName: twittermap.dekokun.info
       Policies:
         - S3CrudPolicy:
             BucketName: twittermap.dekokun.info

@@ -31,7 +31,7 @@ func handleRequest(ctx context.Context, param interface{}) ([]Tweet, error) {
 	falseValue := false
 	userTimelineParams := &twitter.UserTimelineParams{
 		SinceID:         0,
-		ScreenName:      "dekokun_test",
+		ScreenName:      os.Getenv("TwitterUseName"),
 		Count:           10,
 		IncludeRetweets: &falseValue,
 		ExcludeReplies:  &falseValue,
