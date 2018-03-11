@@ -95,7 +95,7 @@ Resources:
   TwitterS3UploadStepFunctionCloudWatchEvent:
     Type: AWS::Events::Rule
     Properties:
-      ScheduleExpression: 'cron(* * * * ? *)'
+      ScheduleExpression: 'cron(*/20 * * * ? *)'
       State: ENABLED
       Targets:
         - Arn: !Ref TwitterS3UploadStepFunction
