@@ -20,6 +20,18 @@ Resources:
       Policies:
         - S3CrudPolicy:
             BucketName: twittermap.dekokun.info
+        - {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "s3:PutObjectAcl",
+                ],
+                "Resource": ["arn:aws:s3:::twittermap.dekokun.info/*"]
+              }
+            ]
+          }
   TwitterS3UploadStepFunction:
     Type: AWS::StepFunctions::StateMachine
     Properties:
