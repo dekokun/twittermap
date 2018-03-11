@@ -27,6 +27,7 @@ func handleRequest(ctx context.Context, tweets []Tweet) (string, error) {
 	sess := session.New(&aws.Config{})
 	s3Svc := s3.New(sess, aws.NewConfig().WithRegion("ap-northeast-1"))
 	uploader := s3manager.NewUploaderWithClient(s3Svc)
+	contentType := "application/json"
 	bucket := "twittermap.dekokun.info"
 	key := "hogehogeeeeetests"
 	jsonBytes, err := json.Marshal(tweets)
@@ -34,10 +35,11 @@ func handleRequest(ctx context.Context, tweets []Tweet) (string, error) {
 		return "", err
 	}
 	upParams := &s3manager.UploadInput{
-		Bucket: &bucket,
-		Key:    &key,
-		ACL:    aws.String("public-read"),
-		Body:   bytes.NewReader(jsonBytes),
+		Bucket:      &bucket,
+		Key:         &key,
+		ACL:         aws.String("public-read"),
+		Body:        bytes.NewReader(jsonBytes),
+		ContentType: &contentType,
 	}
 
 	result, err := uploader.Upload(upParams)
