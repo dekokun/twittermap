@@ -43,7 +43,10 @@ func handleRequest(ctx context.Context, tweets []Tweet) (string, error) {
 	}
 
 	result, err := uploader.Upload(upParams)
-	log.Println(result)
-	log.Println(err)
+	if err != nil {
+		log.Println(result)
+		log.Println(err)
+		return "", err
+	}
 	return "s3upload.go", nil
 }
