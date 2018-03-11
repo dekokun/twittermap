@@ -54,8 +54,6 @@ func handleRequest(ctx context.Context, param interface{}) ([]Tweet, error) {
 			mediaURL = tweet.Entities.Media[0].MediaURLHttps
 			expandedURL = tweet.Entities.Media[0].ExpandedURL
 		}
-		spew.Dump(mediaURL)
-		spew.Dump(expandedURL)
 		result = append(result, Tweet{
 			Coordinates: tweet.Coordinates,
 			CreatedAt:   tweet.CreatedAt,
