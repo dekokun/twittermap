@@ -5,6 +5,7 @@ import (
 )
 
 type Tweet struct {
+	ID          int64                `json:"id"`
 	Coordinates *twitter.Coordinates `json:"coordinates"`
 	CreatedAt   string               `json:"created_at"`
 	Text        string               `json:"text"`
