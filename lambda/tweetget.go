@@ -1,11 +1,11 @@
 package main
 
 import (
+	"context"
 	"log"
 	"os"
 
 	"github.com/BurntSushi/toml"
-	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/dghubble/go-twitter/twitter"
@@ -18,7 +18,8 @@ func main() {
 	lambda.Start(handleRequest)
 }
 
-func handleRequest(request events.CloudWatchEvent) (events.CloudWatchEvent, error) {
+func handleRequest(ctx context.Context, param interface{}) ([]Tweet, error) {
+	log.Println(param)
 	config := loadConfig()
 	oauthConfig := oauth1.NewConfig(config.TwitterConsumerKey, config.TwitterConsumerSecret)
 	token := oauth1.NewToken(config.TwitterAccessToken, config.TwitterAccessSecret)
@@ -26,30 +27,46 @@ func handleRequest(request events.CloudWatchEvent) (events.CloudWatchEvent, erro
 
 	// Twitter client
 	client := twitter.NewClient(httpClient)
-	userTimelineParams := &twitter.UserTimelineParams{ScreenName: "dekokun", Count: 2}
+	trueValue := true
+	falseValue := false
+	userTimelineParams := &twitter.UserTimelineParams{
+		SinceID:         0,
+		ScreenName:      "dekokun_test",
+		Count:           10,
+		IncludeRetweets: &falseValue,
+		ExcludeReplies:  &falseValue,
+		TrimUser:        &trueValue,
+	}
 	tweets, responce, err := client.Timelines.UserTimeline(userTimelineParams)
 	if err != nil {
 		log.Println("responce:", responce)
 		log.Println("err:", err)
+		return nil, err
 	}
-	// spew.Dump(tweets)
-	spew.Dump(tweets[0].Coordinates)
-	spew.Dump(tweets[0].CreatedAt)
-	spew.Dump(tweets[0].Text)
-	spew.Dump(tweets[0].Entities.Media)
-	var mediaURL string
-	var expandedURL string
-	if tweets[0].Entities.Media == nil {
-		mediaURL = ""
-		expandedURL = ""
-	} else {
-		mediaURL = tweets[0].Entities.Media[0].MediaURLHttps
-		expandedURL = tweets[0].Entities.Media[0].ExpandedURL
+	result := []Tweet{}
+	for _, tweet := range tweets {
+		var mediaURL string
+		var expandedURL string
+		if tweet.Entities.Media == nil {
+			mediaURL = ""
+			expandedURL = ""
+		} else {
+			mediaURL = tweet.Entities.Media[0].MediaURLHttps
+			expandedURL = tweet.Entities.Media[0].ExpandedURL
+		}
+		spew.Dump(mediaURL)
+		spew.Dump(expandedURL)
+		result = append(result, Tweet{
+			Coordinates: tweet.Coordinates,
+			CreatedAt:   tweet.CreatedAt,
+			Text:        tweet.Text,
+			mediaURL:    mediaURL,
+			expandedURL: expandedURL,
+		})
 	}
-	spew.Dump(mediaURL)
-	spew.Dump(expandedURL)
+	spew.Dump(result)
 
-	return request, nil
+	return result, nil
 }
 
 type config struct {

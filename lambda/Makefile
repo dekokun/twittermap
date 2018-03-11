@@ -6,11 +6,11 @@ build:
 	@$(MAKE) build/tweetget
 	@$(MAKE) build/s3upload
 
-build/tweetget: tweetget.go Makefile config.toml
-	GOARCH=amd64 GOOS=linux go build -o $@ $<
+build/tweetget: tweetget.go tweet.go Makefile config.toml
+	GOOS=linux go build -o $@ $< tweet.go
 	cp config.toml build/config.toml
-build/s3upload: s3upload.go Makefile config.toml
-	GOARCH=amd64 GOOS=linux go build -o $@ $<
+build/s3upload: s3upload.go tweet.go Makefile config.toml
+	GOARCH=amd64 GOOS=linux go build -o $@ $< tweet.go
 	cp config.toml build/config.toml
 
 .PHONY: install
