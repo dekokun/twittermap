@@ -45,6 +45,9 @@ func handleRequest(ctx context.Context, param interface{}) ([]Tweet, error) {
 	}
 	result := []Tweet{}
 	for _, tweet := range tweets {
+		if tweet.Coordinates == nil {
+			continue
+		}
 		var mediaURL string
 		var expandedURL string
 		if tweet.Entities.Media == nil {
