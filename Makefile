@@ -32,5 +32,9 @@ setup-go:
 
 .PHONY: test
 test: $(SAMLOCAL)
-	make -C lambda build/lambda-go
-	$(SAMLOCAL) local invoke JsonS3UploadLambda -e event_file.json
+	make -C lambda build
+	$(SAMLOCAL) local invoke TweetGetLambda -e event_file.json
+
+.PHONY: build
+build:
+	make -C lambda build
