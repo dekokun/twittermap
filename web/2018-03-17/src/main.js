@@ -1,5 +1,3 @@
-require('es6-promise').polyfill(); // isomorphic-fetchに必要
-require('isomorphic-fetch');
 const _ = require('underscore');
 
 initialize = () => {
