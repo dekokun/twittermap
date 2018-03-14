@@ -4,7 +4,7 @@ module.exports = {
   // モードの設定、v4系以降はmodeを指定しないと、webpack実行時に警告が出る
   mode: 'none',
   // エントリーポイントの設定
-  entry: './src/main.js',
+  entry: ['babel-polyfill', './src/main.js'],
   // 出力の設定
   output: {
     // 出力するファイル名
@@ -18,7 +18,7 @@ module.exports = {
       use: [{
         loader: "babel-loader",
         options:{
-          presets: ['env']
+          presets: [['env', {'modules': false}]]
         }
       }]
     }]
