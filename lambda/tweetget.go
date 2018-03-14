@@ -7,7 +7,6 @@ import (
 
 	"github.com/BurntSushi/toml"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/dghubble/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
 )
@@ -66,7 +65,6 @@ func handleRequest(ctx context.Context, param interface{}) ([]Tweet, error) {
 			expandedURL: expandedURL,
 		})
 	}
-	spew.Dump(result)
 
 	return result, nil
 }
