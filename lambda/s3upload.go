@@ -28,7 +28,7 @@ func handleRequest(ctx context.Context, tweets []Tweet) (string, error) {
 	uploader := s3manager.NewUploaderWithClient(s3Svc)
 	contentType := "application/json"
 	bucket := os.Getenv("BucketName")
-	key := "hogehogeeeeetests"
+	key := "2018-03-17/tweets.json"
 	input := &s3.GetObjectInput{
 		Bucket: aws.String(bucket),
 		Key:    aws.String(key),
