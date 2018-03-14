@@ -22,7 +22,6 @@ func main() {
 }
 
 func handleRequest(ctx context.Context, tweets []Tweet) (string, error) {
-	spew.Dump(tweets)
 	// S3 Client test
 	sess := session.New(&aws.Config{})
 	s3Svc := s3.New(sess, aws.NewConfig().WithRegion("ap-northeast-1"))
@@ -30,7 +29,35 @@ func handleRequest(ctx context.Context, tweets []Tweet) (string, error) {
 	contentType := "application/json"
 	bucket := os.Getenv("BucketName")
 	key := "hogehogeeeeetests"
-	jsonBytes, err := json.Marshal(tweets)
+	input := &s3.GetObjectInput{
+		Bucket: aws.String(bucket),
+		Key:    aws.String(key),
+	}
+	resp, err := s3Svc.GetObject(input)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+	decoder := json.NewDecoder(resp.Body)
+	var oldTweets []Tweet
+	if err := decoder.Decode(&oldTweets); err != nil {
+		// handle error
+		return "", err
+	}
+
+	spew.Dump("result:")
+	spew.Dump(oldTweets)
+	allTweets := append(tweets, oldTweets...)
+	m := make(map[int64]bool)
+	uniqTweets := []Tweet{}
+	// uniq by tweet id
+	for _, tweet := range allTweets {
+		if !m[tweet.ID] {
+			m[tweet.ID] = true
+			uniqTweets = append(uniqTweets, tweet)
+		}
+	}
+	jsonBytes, err := json.Marshal(uniqTweets)
 	if err != nil {
 		return "", err
 	}
@@ -42,9 +69,9 @@ func handleRequest(ctx context.Context, tweets []Tweet) (string, error) {
 		ContentType: &contentType,
 	}
 
-	result, err := uploader.Upload(upParams)
+	uploadResult, err := uploader.Upload(upParams)
 	if err != nil {
-		log.Println(result)
+		log.Println(uploadResult)
 		log.Println(err)
 		return "", err
 	}
