@@ -81,8 +81,8 @@ initialize = function() {
     beforeTweets = json;
     var tweetsData = _.map(difference, function(tweet) {
         var coordinates = tweet.coordinates;
-        var lat = coordinates[0];
-        var lon = coordinates[1];
+        var lon = coordinates[0];
+        var lat = coordinates[1];
         var time = new Date(tweet.created_at);
         var timeString = (time.getMonth()+1)+'/'+time.getDate()+' '+time.getHours()+':'+time.getMinutes();
         var text = '<dl><dt><a href="'+_.escape(tweet.url)+'" target="_blank">'+timeString+'</a></dt><dd>'+_.escape(decodeURIComponent(tweet.text))+'</dd></dl>';
