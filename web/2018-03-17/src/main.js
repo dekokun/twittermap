@@ -142,7 +142,7 @@ initialize = function() {
         onSuccess
       );
     };
-  setTimeout(main, 1 * 1000);
+  setTimeout(main, 0.5 * 1000);
   setInterval(main, 60 * 1000);
 };
 
