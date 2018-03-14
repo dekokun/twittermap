@@ -2,7 +2,7 @@ require('es6-promise').polyfill(); // isomorphic-fetchに必要
 require('isomorphic-fetch');
 const _ = require('underscore');
 
-initialize = function() {
+initialize = () => {
   const zIndexDefault = 0;
   const zIndexHigh = 100;
   const mapOptions = {
@@ -13,7 +13,7 @@ initialize = function() {
   const map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
 
-  const createContainer = function(message) {
+  const createContainer = (message) => {
     const container = document.createElement('div');
     container.style.margin = '10px';
     container.style.padding = '10px';
@@ -23,7 +23,7 @@ initialize = function() {
     return container;
   }
   let globalInfoWindow;
-  const addMarker = function(position, text, type, zIndex) {
+  const addMarker = (position, text, type, zIndex) => {
     let markerUrl;
     switch (type) {
       case 'comment':
@@ -51,7 +51,7 @@ initialize = function() {
       zIndex : zIndex,
       maxWidth: 150
     });
-    google.maps.event.addListener(marker, 'click', function() {
+    google.maps.event.addListener(marker, 'click', () => {
       if (globalInfoWindow && globalInfoWindow.close) {
         globalInfoWindow.close();
       }
@@ -74,11 +74,11 @@ initialize = function() {
 
   let beforeTweets = [];
   let firstFlag = true;
-  const onSuccess = function(json) {
+  const onSuccess = (json) => {
     // _.differenceは同じオブジェクトかを比較するため使えないので自前で
-    var difference = _.select(json, function(obj){ return !_.findWhere(beforeTweets, {url: obj.url}); });
+    var difference = _.select(json, (obj) => { return !_.findWhere(beforeTweets, {url: obj.url}); });
     beforeTweets = json;
-    const tweetsData = _.map(difference, function(tweet) {
+    const tweetsData = _.map(difference, (tweet) => {
         const coordinates = tweet.coordinates;
         const lon = coordinates[0];
         const lat = coordinates[1];
@@ -94,7 +94,7 @@ initialize = function() {
           image_url: tweet.image_url
           };
         });
-    const markers = _.map(tweetsData, function(tweet) {
+    const markers = _.map(tweetsData, (tweet) => {
         let type, zIndex;
         if (tweet.text.match(/今日のスタート地点は/)) {
           type = 'start';
@@ -123,16 +123,16 @@ initialize = function() {
   var descriptions = [
     createContainer('ピン・アイコンを押すとツイートが表示されます。カメラアイコンは画像付きツイートです。ツイートは自動更新されます。'),
   ];
-  _.each(descriptions, function(container) {
+  _.each(descriptions, (container) => {
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(container);
   });
-  setTimeout(function() {
+  setTimeout(() => {
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].clear();
   }, 10000);
 
-  const main = function() {
+  const main = () => {
     fetch("http://twittermap.dekokun.info/2018-03-17/tweets.json")
-      .then(function(response) {
+      .then((response) => {
         if (response.status >= 400) {
           alert('リクエスト失敗。作者にお問い合わせください');
         }
