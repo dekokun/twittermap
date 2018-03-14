@@ -11,5 +11,16 @@ module.exports = {
     filename: 'bundle.js',
     // 出力先のパス（v2系以降は絶対パスを指定する必要がある）
     path: path.resolve('public')
+  },
+  module: {
+    rules: [{
+      test: /\.js$/,
+      use: [{
+        loader: "babel-loader",
+        options:{
+          presets: ['env']
+        }
+      }]
+    }]
   }
 };
