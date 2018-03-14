@@ -122,7 +122,7 @@ initialize = function() {
   };
 
   var descriptions = [
-    createContainer('ピン・アイコンを押すとツイートが表示されます。カメラアイコンは画像付きです'),
+    createContainer('ピン・アイコンを押すとツイートが表示されます。カメラアイコンは画像付きツイートです。ツイートは自動更新されます。'),
   ];
   _.each(descriptions, function(container) {
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(container);
