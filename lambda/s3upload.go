@@ -51,6 +51,7 @@ func handleRequest(ctx context.Context, tweets []Tweet) (string, error) {
 	m := make(map[int64]bool)
 	uniqTweets := []Tweet{}
 	// uniq by tweet id
+	// if many tweet exists in s3, this process is slow.
 	for _, tweet := range allTweets {
 		if !m[tweet.ID] {
 			m[tweet.ID] = true
