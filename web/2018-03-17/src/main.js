@@ -128,17 +128,14 @@ initialize = () => {
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].clear();
   }, 10000);
 
-  const main = () => {
-    fetch("http://twittermap.dekokun.info/2018-03-17/tweets.json")
-      .then((response) => {
-        if (response.status >= 400) {
-          alert('リクエスト失敗。作者にお問い合わせください');
-        }
-        return response.json();
-      }).then(
-        onSuccess
-      );
-    };
+  const main = async () => {
+    const resp = await fetch("http://twittermap.dekokun.info/2018-03-17/tweets.json")
+    if (resp.status >= 400) {
+      alert('リクエスト失敗。作者にお問い合わせください');
+    }
+    const json = await resp.json();
+    onSuccess(json);
+  };
   setTimeout(main, 0.5 * 1000);
   setInterval(main, 60 * 1000);
 };
