@@ -116,7 +116,7 @@ initialize = function() {
     }
     if (markers.length > 0) {
       var lastMarker = _.last(markers);
-      // 新作ツイートが来たら表示してあげましょう
+      // 新作ツイートが来たら内容を表示してあげましょう
       google.maps.event.trigger(lastMarker, 'click');
     }
   };
@@ -142,7 +142,7 @@ initialize = function() {
         onSuccess
       );
     };
-  setTimeout(main, 0.5 * 1000);
+  setTimeout(main, 1 * 1000);
   setInterval(main, 60 * 1000);
 };
 
