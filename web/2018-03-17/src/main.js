@@ -8,7 +8,7 @@ initialize = function() {
   var mapOptions = {
     // 大体道中の中心くらい
     center: { lat: 35.529344, lng: 139.643372},
-    zoom: 11
+    zoom: 10
   };
   var map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
