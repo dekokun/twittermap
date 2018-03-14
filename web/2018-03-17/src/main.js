@@ -92,7 +92,7 @@ initialize = () => {
           image_url: tweet.image_url
           };
         });
-    const markers = _.map(tweetsData, (tweet) => {
+    const markers = tweetsData.map((tweet) => {
         let type, zIndex;
         if (tweet.text.match(/今日のスタート地点は/)) {
           type = 'start';
@@ -121,7 +121,7 @@ initialize = () => {
   var descriptions = [
     createContainer('ピン・アイコンを押すとツイートが表示されます。カメラアイコンは画像付きツイートです。ツイートは自動更新されます。'),
   ];
-  _.each(descriptions, (container) => {
+  descriptions.forEach( (container) => {
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(container);
   });
   setTimeout(() => {
