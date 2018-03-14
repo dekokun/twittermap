@@ -6,6 +6,5 @@ type Tweet struct {
 	CreatedAt   string     `json:"created_at"`
 	Text        string     `json:"text"`
 	Url         string     `json:"url"`
-	MediaURL    string     `json:"media_url"`
-	ExpandedURL string     `json:"expanded_url"`
+	ImageURL    string     `json:"image_url"`
 }

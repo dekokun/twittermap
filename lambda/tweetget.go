@@ -49,13 +49,10 @@ func handleRequest(ctx context.Context, param interface{}) ([]Tweet, error) {
 			continue
 		}
 		var mediaURL string
-		var expandedURL string
 		if tweet.Entities.Media == nil {
 			mediaURL = ""
-			expandedURL = ""
 		} else {
 			mediaURL = tweet.Entities.Media[0].MediaURLHttps
-			expandedURL = tweet.Entities.Media[0].ExpandedURL
 		}
 		result = append(result, Tweet{
 			ID:          tweet.ID,
@@ -63,8 +60,7 @@ func handleRequest(ctx context.Context, param interface{}) ([]Tweet, error) {
 			CreatedAt:   tweet.CreatedAt,
 			Text:        tweet.Text,
 			Url:         "https://twitter.com/" + screenName + "/status/" + strconv.FormatInt(tweet.ID, 10),
-			MediaURL:    mediaURL,
-			ExpandedURL: expandedURL,
+			ImageURL:    mediaURL,
 		})
 	}
 
