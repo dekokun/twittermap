@@ -5,6 +5,7 @@ type Tweet struct {
 	Coordinates [2]float64 `json:"coordinates"`
 	CreatedAt   string     `json:"created_at"`
 	Text        string     `json:"text"`
-	mediaURL    string     `json:"media_url"`
-	expandedURL string     `json:"expanded_url"`
+	Url         string     `json:"url"`
+	MediaURL    string     `json:"media_url"`
+	ExpandedURL string     `json:"expanded_url"`
 }

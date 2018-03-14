@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/BurntSushi/toml"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -28,8 +29,9 @@ func handleRequest(ctx context.Context, param interface{}) ([]Tweet, error) {
 	client := twitter.NewClient(httpClient)
 	trueValue := true
 	falseValue := false
+	screenName := os.Getenv("TwitterUseName")
 	userTimelineParams := &twitter.UserTimelineParams{
-		ScreenName:      os.Getenv("TwitterUseName"),
+		ScreenName:      screenName,
 		Count:           20,
 		IncludeRetweets: &falseValue,
 		ExcludeReplies:  &falseValue,
@@ -60,8 +62,9 @@ func handleRequest(ctx context.Context, param interface{}) ([]Tweet, error) {
 			Coordinates: tweet.Place.BoundingBox.Coordinates[0][0],
 			CreatedAt:   tweet.CreatedAt,
 			Text:        tweet.Text,
-			mediaURL:    mediaURL,
-			expandedURL: expandedURL,
+			Url:         "https://twitter.com/" + screenName + "/status/" + strconv.FormatInt(tweet.ID, 10),
+			MediaURL:    mediaURL,
+			ExpandedURL: expandedURL,
 		})
 	}
 
