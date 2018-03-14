@@ -31,9 +31,13 @@ setup-go:
 		github.com/awslabs/aws-sam-local
 
 .PHONY: test
-test: $(SAMLOCAL)
+test-tweetget: $(SAMLOCAL)
 	make -C lambda build
 	$(SAMLOCAL) local invoke TweetGetLambda -e event_file.json
+
+test-s3upload: $(SAMLOCAL)
+	make -C lambda build
+	$(SAMLOCAL) local invoke S3UploadLambda -e event_tweet.json
 
 .PHONY: build
 build:

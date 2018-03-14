@@ -1,0 +1,38 @@
+[
+  {
+    "id": 617241511906820100,
+    "coordinates": {
+      "coordinates": [
+        139.67907507,
+        35.61189156
+      ],
+      "type": "Point"
+    },
+    "created_at": "Sat Jul 04 08:00:18 +0000 2015",
+    "text": "ほげほげほげら？"
+  },
+  {
+    "id": 617230062606159900,
+    "coordinates": {
+      "coordinates": [
+        139.67934488,
+        35.61197051
+      ],
+      "type": "Point"
+    },
+    "created_at": "Sat Jul 04 07:14:49 +0000 2015",
+    "text": "今日のスタート地点は埼玉です。"
+  },
+  {
+    "id": 617217353579769900,
+    "coordinates": {
+      "coordinates": [
+        139.67933717,
+        35.61196833
+      ],
+      "type": "Point"
+    },
+    "created_at": "Sat Jul 04 06:24:19 +0000 2015",
+    "text": "写真は横向きに限る http://t.co/ehLOEoJh0q"
+  }
+]
