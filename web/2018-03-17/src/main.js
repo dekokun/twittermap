@@ -1,20 +1,20 @@
 require('es6-promise').polyfill(); // isomorphic-fetchに必要
 require('isomorphic-fetch');
-var _ = require('underscore');
+const _ = require('underscore');
 
 initialize = function() {
-  var zIndexDefault = 0;
-  var zIndexHigh = 100;
-  var mapOptions = {
+  const zIndexDefault = 0;
+  const zIndexHigh = 100;
+  const mapOptions = {
     // 大体道中の中心くらい
     center: { lat: 35.529344, lng: 139.643372},
     zoom: 10
   };
-  var map = new google.maps.Map(document.getElementById('map-canvas'),
+  const map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
 
-  var createContainer = function(message) {
-    var container = document.createElement('div');
+  const createContainer = function(message) {
+    const container = document.createElement('div');
     container.style.margin = '10px';
     container.style.padding = '10px';
     container.style.border = '0px solid #000';
@@ -22,9 +22,9 @@ initialize = function() {
     container.innerHTML = message;
     return container;
   }
-  var globalInfoWindow;
-  var addMarker = function(position, text, type, zIndex) {
-    var markerUrl;
+  let globalInfoWindow;
+  const addMarker = function(position, text, type, zIndex) {
+    let markerUrl;
     switch (type) {
       case 'comment':
         markerUrl = 'https://maps.google.com/mapfiles/ms/icons/pink-dot.png';
@@ -38,14 +38,14 @@ initialize = function() {
       default:
         markerUrl = 'https://maps.google.com/mapfiles/ms/icons/red-dot.png';
     }
-    var marker = new google.maps.Marker({
+    const marker = new google.maps.Marker({
       position: position,
       map: map,
       animation: google.maps.Animation.DROP,
       zIndex : zIndex,
       icon: markerUrl
     });
-    var myInfoWindow = new google.maps.InfoWindow({
+    const myInfoWindow = new google.maps.InfoWindow({
       content: text,
       disableAutoPan: true,
       zIndex : zIndex,
@@ -62,9 +62,8 @@ initialize = function() {
   };
 
   // ゴールをおいておいてあげると親切かも
-  var goalLatLng = new google.maps.LatLng(35.339126, 139.486817);
-  // addMarker(goalLatLng, 'ゴール地点', 'red', zIndexHigh);
-  var marker = new google.maps.Marker({
+  const goalLatLng = new google.maps.LatLng(35.339126, 139.486817);
+  const marker = new google.maps.Marker({
     position: goalLatLng,
     map: map,
     label: {
@@ -73,19 +72,19 @@ initialize = function() {
     }
   });
 
-  var beforeTweets = [];
-  var firstFlag = true;
-  var onSuccess = function(json) {
+  let beforeTweets = [];
+  let firstFlag = true;
+  const onSuccess = function(json) {
     // _.differenceは同じオブジェクトかを比較するため使えないので自前で
     var difference = _.select(json, function(obj){ return !_.findWhere(beforeTweets, {url: obj.url}); });
     beforeTweets = json;
-    var tweetsData = _.map(difference, function(tweet) {
-        var coordinates = tweet.coordinates;
-        var lon = coordinates[0];
-        var lat = coordinates[1];
-        var time = new Date(tweet.created_at);
-        var timeString = (time.getMonth()+1)+'/'+time.getDate()+' '+time.getHours()+':'+time.getMinutes();
-        var text = '<dl><dt><a href="'+_.escape(tweet.url)+'" target="_blank">'+timeString+'</a></dt><dd>'+_.escape(decodeURIComponent(tweet.text))+'</dd></dl>';
+    const tweetsData = _.map(difference, function(tweet) {
+        const coordinates = tweet.coordinates;
+        const lon = coordinates[0];
+        const lat = coordinates[1];
+        const time = new Date(tweet.created_at);
+        const timeString = (time.getMonth()+1)+'/'+time.getDate()+' '+time.getHours()+':'+time.getMinutes();
+        let text = '<dl><dt><a href="'+_.escape(tweet.url)+'" target="_blank">'+timeString+'</a></dt><dd>'+_.escape(decodeURIComponent(tweet.text))+'</dd></dl>';
         if (tweet.image_url) {
         text += '<a href="'+_.escape(tweet.image_url)+'" target="_blank"><img width="150" src="'+_.escape(tweet.image_url)+'" /></a>';
         }
@@ -95,8 +94,8 @@ initialize = function() {
           image_url: tweet.image_url
           };
         });
-    var markers = _.map(tweetsData, function(tweet) {
-        var type, zIndex;
+    const markers = _.map(tweetsData, function(tweet) {
+        let type, zIndex;
         if (tweet.text.match(/今日のスタート地点は/)) {
           type = 'start';
           zIndex = zIndexHigh;
@@ -115,7 +114,7 @@ initialize = function() {
       firstFlag = false;
     }
     if (markers.length > 0) {
-      var lastMarker = _.last(markers);
+      const lastMarker = _.last(markers);
       // 新作ツイートが来たら内容を表示してあげましょう
       google.maps.event.trigger(lastMarker, 'click');
     }
@@ -131,7 +130,7 @@ initialize = function() {
     map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].clear();
   }, 10000);
 
-  var main = function() {
+  const main = function() {
     fetch("http://twittermap.dekokun.info/2018-03-17/tweets.json")
       .then(function(response) {
         if (response.status >= 400) {
