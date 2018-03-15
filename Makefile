@@ -1,7 +1,7 @@
 CONFIG = config.mk
 include $(CONFIG)
 
-OUTPUT_TEMPLATE := output.yml
+OUTPUT_TEMPLATE := .output.yml
 INPUT_TEMPATE := template.yml
 
 SAMLOCAL := .bin/aws-sam-local
