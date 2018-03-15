@@ -1,4 +1,4 @@
-const _ = require('underscore');
+const escape = require('escape-html');
 
 initialize = () => {
   const zIndexDefault = 0;
@@ -73,8 +73,7 @@ initialize = () => {
   let beforeTweets = [];
   let firstFlag = true;
   const onSuccess = (json) => {
-    // _.differenceは同じオブジェクトかを比較するため使えないので自前で
-    var difference = json.filter((obj) => { return !_.findWhere(beforeTweets, {id: obj.id}); });
+    const difference = json.filter((obj1) => { return !beforeTweets.some((obj2) => {return obj1.id == obj2.id})});
     beforeTweets = json;
     const tweetsData = difference.map((tweet) => {
         const coordinates = tweet.coordinates;
@@ -82,9 +81,9 @@ initialize = () => {
         const lat = coordinates[1];
         const time = new Date(tweet.created_at);
         const timeString = (time.getMonth()+1)+'/'+time.getDate()+' '+time.getHours()+':'+time.getMinutes();
-        let text = '<dl><dt><a href="'+_.escape(tweet.url)+'" target="_blank">'+timeString+'</a></dt><dd>'+_.escape(decodeURIComponent(tweet.text))+'</dd></dl>';
+        let text = '<dl><dt><a href="'+escape(tweet.url)+'" target="_blank">'+timeString+'</a></dt><dd>'+escape(decodeURIComponent(tweet.text))+'</dd></dl>';
         if (tweet.image_url) {
-        text += '<a href="'+_.escape(tweet.image_url)+'" target="_blank"><img width="150" src="'+_.escape(tweet.image_url)+'" /></a>';
+        text += '<a href="'+escape(tweet.image_url)+'" target="_blank"><img width="150" src="'+escape(tweet.image_url)+'" /></a>';
         }
         return {
           position: new google.maps.LatLng(lat, lon),
@@ -108,11 +107,12 @@ initialize = () => {
         });
     // 最初の一回だけ、最後のピンの場所に中心をずらす
     if (tweetsData.length > 0 && firstFlag) {
-      map.panTo(_.last(tweetsData).position);
+      const [lastTweet] = tweetsData.slice(-1)
+      map.panTo(lastTweet.position);
       firstFlag = false;
     }
     if (markers.length > 0) {
-      const lastMarker = _.last(markers);
+      const [lastMarker] = markers.slice(-1);
       // 新作ツイートが来たら内容を表示してあげましょう
       google.maps.event.trigger(lastMarker, 'click');
     }
