@@ -66,7 +66,7 @@ google.maps.event.addDomListener(window, 'load', () => {
     map: map,
     label: {
       fontWeight: 'bold',
-      text: 'スタート地点',
+      text: 'スタート',
     }
   });
   const goalLatLng = new google.maps.LatLng(35.339126, 139.486817);
@@ -75,7 +75,7 @@ google.maps.event.addDomListener(window, 'load', () => {
     map: map,
     label: {
       fontWeight: 'bold',
-      text: 'ゴール地点',
+      text: 'ゴール',
     }
   });
 
