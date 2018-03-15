@@ -1,6 +1,6 @@
 const escape = require('escape-html');
 
-initialize = () => {
+google.maps.event.addDomListener(window, 'load', () => {
   const zIndexDefault = 0;
   const zIndexHigh = 100;
   const mapOptions = {
@@ -138,6 +138,4 @@ initialize = () => {
   };
   setTimeout(main, 0.5 * 1000);
   setInterval(main, 60 * 1000);
-};
-
-google.maps.event.addDomListener(window, 'load', initialize);
+});
