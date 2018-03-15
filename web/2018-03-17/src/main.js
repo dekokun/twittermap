@@ -60,9 +60,9 @@ google.maps.event.addDomListener(window, 'load', () => {
   };
 
   // ゴールとスタートをわかりやすくしておく
-  const goalLatLng = new google.maps.LatLng(35.685527, 139.780991);
-  const marker = new google.maps.Marker({
-    position: goalLatLng,
+  const startLatLng = new google.maps.LatLng(35.685527, 139.780991);
+  new google.maps.Marker({
+    position: startLatLng,
     map: map,
     label: {
       fontWeight: 'bold',
@@ -70,7 +70,7 @@ google.maps.event.addDomListener(window, 'load', () => {
     }
   });
   const goalLatLng = new google.maps.LatLng(35.339126, 139.486817);
-  const marker = new google.maps.Marker({
+  new google.maps.Marker({
     position: goalLatLng,
     map: map,
     label: {
