@@ -20,7 +20,6 @@ func main() {
 }
 
 func handleRequest(ctx context.Context, param interface{}) ([]Tweet, error) {
-	log.Println(param)
 	config := loadConfig()
 	oauthConfig := oauth1.NewConfig(config.TwitterConsumerKey, config.TwitterConsumerSecret)
 	token := oauth1.NewToken(config.TwitterAccessToken, config.TwitterAccessSecret)
