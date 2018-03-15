@@ -1,4 +1,6 @@
 const path = require('path');
+const LicenseInfoWebpackPlugin = require('license-info-webpack-plugin').default;
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 module.exports = {
   // モードの設定、v4系以降はmodeを指定しないと、webpack実行時に警告が出る
@@ -12,6 +14,11 @@ module.exports = {
     // 出力先のパス（v2系以降は絶対パスを指定する必要がある）
     path: path.resolve('public')
   },
+  plugins: [
+    new LicenseInfoWebpackPlugin({
+      glob: '{LICENSE,license,License}*'
+    }),
+  ],
   module: {
     rules: [{
       test: /\.js$/,
@@ -22,5 +29,16 @@ module.exports = {
         }
       }]
     }]
+  },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          output: {
+            comments: /^\**!|@preserve|@license|@cc_on/
+          }
+        }
+      })
+    ]
   }
 };
