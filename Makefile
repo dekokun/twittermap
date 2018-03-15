@@ -16,6 +16,7 @@ $(OUTPUT_TEMPLATE): $(INPUT_TEMPATE) $(SAMLOCAL) lambda/tweetget.go lambda/s3upl
 		--output-template-file $@
 
 deploy: $(OUTPUT_TEMPLATE) $(SAMLOCAL)
+	@$(MAKE) -C web/2018-03-17/ build
 	$(SAMLOCAL) deploy \
 		--template-file $< \
 		--stack-name $(CONFIG_CLOUDFORMATION_STACK_NAME) \
