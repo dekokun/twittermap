@@ -74,7 +74,7 @@ initialize = () => {
   let firstFlag = true;
   const onSuccess = (json) => {
     // _.differenceは同じオブジェクトかを比較するため使えないので自前で
-    var difference = json.filter((obj) => { return !_.findWhere(beforeTweets, {url: obj.url}); });
+    var difference = json.filter((obj) => { return !_.findWhere(beforeTweets, {id: obj.id}); });
     beforeTweets = json;
     const tweetsData = difference.map((tweet) => {
         const coordinates = tweet.coordinates;
