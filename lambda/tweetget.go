@@ -34,7 +34,7 @@ func handleRequest(ctx context.Context, param interface{}) ([]Tweet, error) {
 		ScreenName:      screenName,
 		Count:           20,
 		IncludeRetweets: &falseValue,
-		ExcludeReplies:  &falseValue,
+		ExcludeReplies:  &trueValue,
 		TrimUser:        &trueValue,
 	}
 	tweets, responce, err := client.Timelines.UserTimeline(userTimelineParams)
@@ -45,7 +45,7 @@ func handleRequest(ctx context.Context, param interface{}) ([]Tweet, error) {
 	}
 	tweetsWithCoordinates := []Tweet{}
 	for _, tweet := range tweets {
-		if tweet.Place == nil {
+		if tweet.Coordinates == nil {
 			continue
 		}
 		var mediaURL string
@@ -56,7 +56,7 @@ func handleRequest(ctx context.Context, param interface{}) ([]Tweet, error) {
 		}
 		tweetsWithCoordinates = append(tweetsWithCoordinates, Tweet{
 			ID:          tweet.ID,
-			Coordinates: tweet.Place.BoundingBox.Coordinates[0][0],
+			Coordinates: tweet.Coordinates.Coordinates,
 			CreatedAt:   tweet.CreatedAt,
 			Text:        tweet.Text,
 			Url:         "https://twitter.com/" + screenName + "/status/" + strconv.FormatInt(tweet.ID, 10),
