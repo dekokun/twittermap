@@ -89,7 +89,7 @@ google.maps.event.addDomListener(window, 'load', () => {
         const lon = coordinates[0];
         const lat = coordinates[1];
         const time = new Date(tweet.created_at);
-        const timeString = (time.getMonth()+1)+'/'+time.getDate()+' '+time.getHours()+':'+time.getMinutes();
+        const timeString = ("00" + (time.getMonth()+1)).slice(-2)+'/'+("00" + time.getDate()).slice(-2)+' '+("00" + time.getHours()).slice(-2)+':'+("00" + time.getMinutes()).slice(-2);
         let text = '<dl><dt><a href="'+escape(tweet.url)+'" target="_blank">'+timeString+'</a></dt><dd>'+escape(decodeURIComponent(tweet.text))+'</dd></dl>';
         if (tweet.image_url) {
         text += '<a href="'+escape(tweet.image_url)+'" target="_blank"><img width="150" src="'+escape(tweet.image_url)+'" /></a>';
