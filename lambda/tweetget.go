@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"os"
+	"sort"
 	"strconv"
 
 	"github.com/BurntSushi/toml"
@@ -43,7 +44,7 @@ func handleRequest(ctx context.Context, param interface{}) ([]Tweet, error) {
 		log.Println("err:", err)
 		return nil, err
 	}
-	result := []Tweet{}
+	tweetsWithCoordinates := []Tweet{}
 	for _, tweet := range tweets {
 		if tweet.Place == nil {
 			continue
@@ -54,7 +55,7 @@ func handleRequest(ctx context.Context, param interface{}) ([]Tweet, error) {
 		} else {
 			mediaURL = tweet.Entities.Media[0].MediaURLHttps
 		}
-		result = append(result, Tweet{
+		tweetsWithCoordinates = append(tweetsWithCoordinates, Tweet{
 			ID:          tweet.ID,
 			Coordinates: tweet.Place.BoundingBox.Coordinates[0][0],
 			CreatedAt:   tweet.CreatedAt,
@@ -64,7 +65,11 @@ func handleRequest(ctx context.Context, param interface{}) ([]Tweet, error) {
 		})
 	}
 
-	return result, nil
+	sort.Slice(tweetsWithCoordinates, func(i, j int) bool {
+		return tweetsWithCoordinates[i].ID < tweetsWithCoordinates[j].ID
+	})
+
+	return tweetsWithCoordinates, nil
 }
 
 type config struct {
