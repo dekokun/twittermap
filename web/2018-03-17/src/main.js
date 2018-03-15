@@ -59,7 +59,16 @@ google.maps.event.addDomListener(window, 'load', () => {
     return marker;
   };
 
-  // ゴールをおいておいてあげると親切かも
+  // ゴールとスタートをわかりやすくしておく
+  const goalLatLng = new google.maps.LatLng(35.685527, 139.780991);
+  const marker = new google.maps.Marker({
+    position: goalLatLng,
+    map: map,
+    label: {
+      fontWeight: 'bold',
+      text: 'スタート地点',
+    }
+  });
   const goalLatLng = new google.maps.LatLng(35.339126, 139.486817);
   const marker = new google.maps.Marker({
     position: goalLatLng,
