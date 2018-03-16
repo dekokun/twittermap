@@ -1,5 +1,12 @@
 AWSTemplateFormatVersion: 2010-09-09
 Transform: AWS::Serverless-2016-10-31
+Parameters:
+  DomainName:
+    Description: QDN of the contents.
+    Type: String
+  TwitterScreenName:
+    Description: Retrieve Twitter Account.
+    Type: String
 Resources:
   TweetGetLambda:
     Type: AWS::Serverless::Function
@@ -11,8 +18,8 @@ Resources:
       AutoPublishAlias: latest
       Environment:
         Variables:
-          BucketName: twittermap.dekokun.info
-          TwitterUseName: dekokun
+          BucketName: !Ref DomainName
+          TwitterUseName: !Ref TwitterScreenName
   S3UploadLambda:
     Type: AWS::Serverless::Function
     Properties:
@@ -23,22 +30,19 @@ Resources:
       AutoPublishAlias: latest
       Environment:
         Variables:
-          BucketName: twittermap.dekokun.info
+          BucketName: !Ref DomainName
       Policies:
         - S3CrudPolicy:
-            BucketName: twittermap.dekokun.info
-        - {
-            "Version": "2012-10-17",
-            "Statement": [
-              {
-                "Effect": "Allow",
-                "Action": [
-                  "s3:PutObjectAcl",
-                ],
-                "Resource": ["arn:aws:s3:::twittermap.dekokun.info/*"]
-              }
-            ]
-          }
+            BucketName: !Ref DomainName
+        -
+          Version: 2012-10-17
+          Statement:
+            -
+              Effect: Allow
+              Action:
+                - s3:PutObjectAcl
+              Resource:
+                - !Sub ["arn:aws:s3:::${DomainName}/*", {DomainName: !Ref DomainName}]
   TwitterS3UploadStepFunction:
     Type: AWS::StepFunctions::StateMachine
     Properties:

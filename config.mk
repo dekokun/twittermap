@@ -4,3 +4,6 @@ CONFIG_CLOUDFORMATION_PACKAGE_S3_BUCKET_NAME := dekokun-cloudformation-packages
 CONFIG_CLOUDFORMATION_PACKAGE_S3_PREFIX := twittermap
 # Anything is ok if the stack name is not exists in your CloudFormation stacks.
 CONFIG_CLOUDFORMATION_STACK_NAME := twittermap
+
+CONFIG_CLOUDFORMATION_DOMAIN_NAME := twittermap.dekokun.info
+CONFIG_CLOUDFORMATION_TWITTER_SCREEN_NAME := dekokun
