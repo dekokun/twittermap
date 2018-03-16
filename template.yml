@@ -7,6 +7,9 @@ Parameters:
   TwitterScreenName:
     Description: Retrieve Twitter Account.
     Type: String
+  AcmCertificateArn:
+    Description: ACM arn you have.
+    Type: String
 Resources:
   TweetGetLambda:
     Type: AWS::Serverless::Function
@@ -133,3 +136,57 @@ Resources:
                 Action:
                   - states:StartExecution
                 Resource: [!Ref TwitterS3UploadStepFunction]
+
+  CloudFront:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !Ref DomainName
+        Origins:
+          -
+            Id: s3
+            DomainName: !Sub ["${DomainName}.s3-website-${AWS::Region}.amazonaws.com", {DomainName: !Ref DomainName}]
+            CustomOriginConfig:
+              OriginProtocolPolicy: http-only
+              HTTPPort: 80
+        CacheBehaviors:
+          # dynamic change json
+          - PathPattern: "*/tweets.json"
+            TargetOriginId: s3
+            Compress: true
+            ForwardedValues:
+              Cookies: { Forward: none }
+              # for cache test
+              QueryString: true
+            DefaultTTL: 30
+            MaxTTL: 30
+            MinTTL: 30
+            ViewerProtocolPolicy: redirect-to-https
+        CustomErrorResponses:
+          - { ErrorCachingMinTTL: 5, ErrorCode: 400 }
+          - { ErrorCachingMinTTL: 5, ErrorCode: 403 }
+          - { ErrorCachingMinTTL: 5, ErrorCode: 404 }
+          - { ErrorCachingMinTTL: 5, ErrorCode: 405 }
+          - { ErrorCachingMinTTL: 5, ErrorCode: 414 }
+          - { ErrorCachingMinTTL: 5, ErrorCode: 500 }
+          - { ErrorCachingMinTTL: 5, ErrorCode: 501 }
+          - { ErrorCachingMinTTL: 5, ErrorCode: 502 }
+          - { ErrorCachingMinTTL: 5, ErrorCode: 503 }
+          - { ErrorCachingMinTTL: 5, ErrorCode: 504 }
+        DefaultCacheBehavior:
+          Compress: true
+          DefaultTTL: 86400
+          MaxTTL: 86400
+          MinTTL: 86400
+          ForwardedValues:
+            Cookies: { Forward: none }
+            # for cache test
+            QueryString: true
+          TargetOriginId: s3
+          ViewerProtocolPolicy: redirect-to-https
+        Enabled: true
+        HttpVersion: http2
+        ViewerCertificate:
+          AcmCertificateArn: !Ref AcmCertificateArn
+          SslSupportMethod: sni-only

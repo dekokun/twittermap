@@ -20,7 +20,7 @@ deploy: $(OUTPUT_TEMPLATE) $(SAMLOCAL)
 	$(SAMLOCAL) deploy \
 		--template-file $< \
 		--stack-name $(CONFIG_CLOUDFORMATION_STACK_NAME) \
-		--parameter-overrides DomainName=$(CONFIG_CLOUDFORMATION_DOMAIN_NAME) TwitterScreenName=$(CONFIG_CLOUDFORMATION_TWITTER_SCREEN_NAME)
+		--parameter-overrides DomainName=$(CONFIG_CLOUDFORMATION_DOMAIN_NAME) TwitterScreenName=$(CONFIG_CLOUDFORMATION_TWITTER_SCREEN_NAME) AcmCertificateArn=$(CONFIG_CLOUDFORMATION_ACM_CERTIFICATE_ARN) \
 		--capabilities CAPABILITY_IAM
 
 .bin/%: Makefile
