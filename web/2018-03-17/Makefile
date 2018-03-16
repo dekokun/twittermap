@@ -12,6 +12,14 @@ build: node_modules/.bin/webpack-cli
 deploy:
 	$(MAKE) build
 	aws s3 cp ./public/ s3://twittermap.dekokun.info/2018-03-17/ --acl public-read --recursive --region ap-northeast-1
+	sleep 5
+	$(MAKE) invalidate
+	sleep 5
+
+.PHONY: invalidate
+invalidate:
+	aws cloudfront create-invalidation --distribution-id E3OF33941XZRCK --paths '/*'
+
 .PHONY: dangerous-reset
 dangerous-reset:
 	aws s3 cp ./tweets.json.default s3://twittermap.dekokun.info/2018-03-17/tweets.json --acl public-read --content-type application/json --region ap-northeast-1 
