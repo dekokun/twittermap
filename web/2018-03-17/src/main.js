@@ -138,7 +138,7 @@ google.maps.event.addDomListener(window, 'load', () => {
   }, 10000);
 
   const main = async () => {
-    const resp = await fetch("http://twittermap.dekokun.info/2018-03-17/tweets.json")
+    const resp = await fetch("//twittermap.dekokun.info/2018-03-17/tweets.json")
     if (resp.status >= 400) {
       alert('リクエスト失敗。作者にお問い合わせください');
     }
