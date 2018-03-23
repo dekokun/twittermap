@@ -106,6 +106,8 @@ Resources:
                 Action:
                   - lambda:InvokeFunction
                 Resource: [!GetAtt [S3UploadLambda, Arn], !GetAtt [TweetGetLambda, Arn]]
+# stop cron by comment out because my travel is done.
+#
 #  TwitterS3UploadStepFunctionCloudWatchEvent:
 #    Type: AWS::Events::Rule
 #    Properties:
